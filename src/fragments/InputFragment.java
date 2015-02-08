@@ -13,14 +13,14 @@ import com.itforhumanity.mypda.R;
 public class InputFragment extends Fragment {
 	public static final String ARG_SECTION_NUMBER = "section_number";
 
+	View rootView;
 	EditText txtInput;
 	
 	public InputFragment() {
 	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_input, container, false);
+		rootView = inflater.inflate(R.layout.fragment_input, container, false);
 		txtInput = (EditText) rootView.findViewById(R.id.txtInput);
 		//this is how to extract data from the bundle
 		//getArguments().getInt(ARG_SECTION_NUMBER))
