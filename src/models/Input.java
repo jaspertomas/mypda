@@ -3,199 +3,107 @@ package models;
 import java.util.ArrayList;
 import java.util.Date;
 
-import utils.MyDatabaseHelper;
+import utils.StandardDateHelper;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 public class Input {
     //------------FIELDS-----------
-    public static final String tablename=Input.tablename;
-    public static String[] fields=Input.fields;
-    public static String[] fieldtypes=Input.fieldtypes;
+    public static final String tablename="inputs";
+    //field names
+    public static String[] fields={
+            "id"
+            ,"content"
+            ,"date_created"
+            ,"date_modified"
+            };
+    //field types
+    public static String[] fieldtypes={
+            "int(11)"
+            ,"text"
+            ,"date"
+            ,"date"
+            };
     //-----------------------
-    //-------------------------TABLE FUNCTIONS---------------------
 
-    //-----------getter functions----------
-    public static Input getById(Integer id) {
-            ArrayList<Input> map=select(" where id = '"+id.toString()+"'");
-            for(Input item:map)return item;
-            return null;
+    public Integer id;
+    public String content;
+    public Date date_created;
+    public Date date_modified;
+
+    public Input() {
     }
-    public static Input getByContent(String content)
-    {
-            ArrayList<Input> items=select(" where content = '"+content+"'");
-            for(Input item:items)return item;
-            return null;
-    }	
-    public static ArrayList<Input> selectByContent(String content)
-    {
-            return select(" where content = '"+content+"'");
-    }	
-    public static Input getByDateCreated(Timestamp date_created)
-    {
-            ArrayList<Input> items=select(" where date_created = '"+date_created.toString()+"'");
-            for(Input item:items)return item;
-            return null;
-    }	
-    public static ArrayList<Input> selectByDateCreated(Timestamp date_created)
-    {
-            return select(" where date_created = '"+date_created.toString()+"'");
-    }	
-    public static Input getByDateModified(Timestamp date_modified)
-    {
-            ArrayList<Input> items=select(" where date_modified = '"+date_modified.toString()+"'");
-            for(Input item:items)return item;
-            return null;
-    }	
-    public static ArrayList<Input> selectByDateModified(Timestamp date_modified)
-    {
-            return select(" where date_modified = '"+date_modified.toString()+"'");
-    }	
-    //-----------database functions--------------
-
-	public static void delete(Input item)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		db.execSQL("delete from "+tablename+" where id = '"+item.getId()+"';");
-		db.close();
-	}
-	public static void delete(Integer id)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		db.execSQL("delete from "+tablename+" where id = '"+id+"';");
-		db.close();
-	}
-	public static Integer insert(Input item)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		
-		if(fieldtypes[0].contains("int"))
-		{
-			db.execSQL("INSERT INTO "+tablename+" ("+implodeFields(false)+")VALUES (" 
-					+implodeValues(item, false)
-					+");");
-		}
-		else
-		if(fieldtypes[0].contains("varchar"))
-		{
-			db.execSQL("INSERT INTO "+tablename+" ("+implodeFields(true)+")VALUES (" 
-					+implodeValues(item, true)
-					+");");
-		}
-
-            //fetch last insert id
-		Cursor cursor = db.rawQuery("SELECT last_insert_rowid() FROM "+tablename+" ", null);
-		cursor.moveToFirst();
-		Integer result=cursor.getInt(0);
-		cursor.close();
-
-		db.close();
-		return result;
-	}
-	public static void update(Input item)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-
-		db.execSQL(
-		"update "+tablename+" set "+implodeFieldsWithValues(item,false)+" where id = '"+item.getId()
-		+"';");
-		db.close();
-	}
-	public static ArrayList<Input> select(String criteria) {
-		ArrayList<Input> items = new ArrayList<Input>();
-		SQLiteDatabase db = MyDatabaseHelper.getInstance()
-				.getWritableDatabase();
-
-		Cursor cursor = db.rawQuery("SELECT * FROM "+tablename+" "+criteria, null);
-		items = new ArrayList<Input>();
-		while (cursor.moveToNext()) {
-			items.add(new Input(cursor));
-		}
-		cursor.close();
-		db.close();
-		return items;
-	}
-	public static Integer count(String criteria) {
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		Cursor cursor = db.rawQuery("SELECT count(*) FROM "+tablename+" "+criteria, null);
-		cursor.moveToFirst();
-		Integer result=cursor.getInt(0);
-		cursor.close();
-		db.close();
-		return result;
-	}
-	public static Integer getLastInsertId() {
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		Cursor cursor = db.rawQuery("SELECT last_insert_rowid() FROM "+tablename+" ", null);
-		cursor.moveToFirst();
-		Integer result=cursor.getInt(0);
-		cursor.close();
-		db.close();
-		return result;
-	}
-
-    //-----------database helper functions--------------
-    public static String implodeValues(Input item,boolean withId)
-    {
-            ArrayList<String> values=item.implodeFieldValuesHelper(withId);
-            String output="";
-            for(String value:values)
-            {
-                    if(!output.isEmpty())
-                            output+=",";
-                    output+=(value!=null?"'"+value+"'":"null");
-            }
-            return output;
+    public Input(Cursor c) {
+        id=c.getInt(c.getColumnIndex("id"));
+        content=c.getString(c.getColumnIndex("content"));
+        date_created=StandardDateHelper.toDate(c.getString(c.getColumnIndex("date_created")));
+        date_modified=StandardDateHelper.toDate(c.getString(c.getColumnIndex("date_modified")));
     }
-    public static String implodeFields(boolean withId)
-    {
-            String output="";
-            for(String field:fields)
-            {
-                    if(!withId && field.contentEquals("id"))continue;
-                    if(!output.isEmpty())
-                            output+=",";
-                    output+=field;
-            }
-            return output;
-    }
-    public static String implodeFieldsWithValues(Input item,boolean withId)
-    {
-            ArrayList<String> values=item.implodeFieldValuesHelper(true);//get entire list of values; whether the id is included will be dealt with later.
 
-            if(values.size()!=fields.length)
-            {
-                    System.err.println("Input:implodeFieldsWithValues(): ERROR: values length does not match fields length");
-            }
+//	public String getUuid()
+//	{
+//		return id.toString()+"-";
+//	}
 
-            String output="";
-            for(int i=0;i<fields.length;i++)
-            {
-                    if(!withId && fields[i].contentEquals("id"))continue;
-                    if(!output.isEmpty())
-                            output+=",";
-                    output+=fields[i]+"="+(values.get(i)!=null?"'"+values.get(i)+"'":"null");
-            }
-            return output;
-    }	
-    public static String implodeFieldsWithTypes()
-    {
-            String output="";
-            for(int i=0;i<fields.length;i++)
-            {
-                    if(fields[i].contentEquals(fields[0]))//fields[0] being the primary key
-                            output+=fields[i]+" "+fieldtypes[i]+" PRIMARY KEY";
-                    else
-                            output+=","+fields[i]+" "+fieldtypes[i];
-            }
-            return output;
-    }	
-    public static String createTable()
-    {
-            return "CREATE TABLE IF NOT EXISTS "+tablename+" ("+implodeFieldsWithTypes()+" );";
+    public Integer getId() {
+            return id;
     }
-    public static String deleteTable()
+
+    public void setId(Integer id) {
+            this.id = id;
+    }
+
+    public String getContent() {
+            return content;
+    }
+
+    public void setContent(String content) {
+            this.content = content;
+    }
+
+    public Date getDateCreated() {
+            return date_created;
+    }
+
+    public void setDateCreated(Date date_created) {
+            this.date_created = date_created;
+    }
+
+    public Date getDateModified() {
+            return date_modified;
+    }
+
+    public void setDateModified(Date date_modified) {
+            this.date_modified = date_modified;
+    }
+
+
+    //database functions
+    public ArrayList<String> implodeFieldValuesHelper(boolean withId)
     {
-            return "DROP TABLE IF EXISTS "+tablename;
+            ArrayList<String> values=new ArrayList<String>(); 
+
+            //add values for each field here
+            if(withId)values.add(id!=null?id.toString():null);
+            values.add(content);
+            values.add(date_created!=null?date_created.toString():null);
+            values.add(date_modified!=null?date_modified.toString():null);
+
+            return values;
+    }
+    public void delete()
+    {
+            Inputs.delete(this);
+    }
+    public void save()
+    {
+            if(id==null || id==0)
+                    id=Inputs.insert(this);
+            else
+                    Inputs.update(this);
+    }
+    @Override
+    public String toString()
+    {
+            return id.toString();
     }
 }

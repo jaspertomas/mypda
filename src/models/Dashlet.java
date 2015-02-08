@@ -3,199 +3,107 @@ package models;
 import java.util.ArrayList;
 import java.util.Date;
 
-import utils.MyDatabaseHelper;
+import utils.StandardDateHelper;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 public class Dashlet {
     //------------FIELDS-----------
-    public static final String tablename=Dashlet.tablename;
-    public static String[] fields=Dashlet.fields;
-    public static String[] fieldtypes=Dashlet.fieldtypes;
+    public static final String tablename="dashlets";
+    //field names
+    public static String[] fields={
+            "id"
+            ,"name"
+            ,"description"
+            ,"type_id"
+            };
+    //field types
+    public static String[] fieldtypes={
+            "int(11)"
+            ,"varchar(50)"
+            ,"text"
+            ,"int(11)"
+            };
     //-----------------------
-    //-------------------------TABLE FUNCTIONS---------------------
 
-    //-----------getter functions----------
-    public static Dashlet getById(Integer id) {
-            ArrayList<Dashlet> map=select(" where id = '"+id.toString()+"'");
-            for(Dashlet item:map)return item;
-            return null;
+    public Integer id;
+    public String name;
+    public String description;
+    public Integer type_id;
+
+    public Dashlet() {
     }
-    public static Dashlet getByName(String name)
-    {
-            ArrayList<Dashlet> items=select(" where name = '"+name+"'");
-            for(Dashlet item:items)return item;
-            return null;
-    }	
-    public static ArrayList<Dashlet> selectByName(String name)
-    {
-            return select(" where name = '"+name+"'");
-    }	
-    public static Dashlet getByDescription(String description)
-    {
-            ArrayList<Dashlet> items=select(" where description = '"+description+"'");
-            for(Dashlet item:items)return item;
-            return null;
-    }	
-    public static ArrayList<Dashlet> selectByDescription(String description)
-    {
-            return select(" where description = '"+description+"'");
-    }	
-    public static Dashlet getByTypeId(Integer type_id)
-    {
-            ArrayList<Dashlet> items=select(" where type_id = '"+type_id.toString()+"'");
-            for(Dashlet item:items)return item;
-            return null;
-    }	
-    public static ArrayList<Dashlet> selectByTypeId(Integer type_id)
-    {
-            return select(" where type_id = '"+type_id.toString()+"'");
-    }	
-    //-----------database functions--------------
-
-	public static void delete(Dashlet item)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		db.execSQL("delete from "+tablename+" where id = '"+item.getId()+"';");
-		db.close();
-	}
-	public static void delete(Integer id)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		db.execSQL("delete from "+tablename+" where id = '"+id+"';");
-		db.close();
-	}
-	public static Integer insert(Dashlet item)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		
-		if(fieldtypes[0].contains("int"))
-		{
-			db.execSQL("INSERT INTO "+tablename+" ("+implodeFields(false)+")VALUES (" 
-					+implodeValues(item, false)
-					+");");
-		}
-		else
-		if(fieldtypes[0].contains("varchar"))
-		{
-			db.execSQL("INSERT INTO "+tablename+" ("+implodeFields(true)+")VALUES (" 
-					+implodeValues(item, true)
-					+");");
-		}
-
-            //fetch last insert id
-		Cursor cursor = db.rawQuery("SELECT last_insert_rowid() FROM "+tablename+" ", null);
-		cursor.moveToFirst();
-		Integer result=cursor.getInt(0);
-		cursor.close();
-
-		db.close();
-		return result;
-	}
-	public static void update(Dashlet item)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-
-		db.execSQL(
-		"update "+tablename+" set "+implodeFieldsWithValues(item,false)+" where id = '"+item.getId()
-		+"';");
-		db.close();
-	}
-	public static ArrayList<Dashlet> select(String criteria) {
-		ArrayList<Dashlet> items = new ArrayList<Dashlet>();
-		SQLiteDatabase db = MyDatabaseHelper.getInstance()
-				.getWritableDatabase();
-
-		Cursor cursor = db.rawQuery("SELECT * FROM "+tablename+" "+criteria, null);
-		items = new ArrayList<Dashlet>();
-		while (cursor.moveToNext()) {
-			items.add(new Dashlet(cursor));
-		}
-		cursor.close();
-		db.close();
-		return items;
-	}
-	public static Integer count(String criteria) {
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		Cursor cursor = db.rawQuery("SELECT count(*) FROM "+tablename+" "+criteria, null);
-		cursor.moveToFirst();
-		Integer result=cursor.getInt(0);
-		cursor.close();
-		db.close();
-		return result;
-	}
-	public static Integer getLastInsertId() {
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		Cursor cursor = db.rawQuery("SELECT last_insert_rowid() FROM "+tablename+" ", null);
-		cursor.moveToFirst();
-		Integer result=cursor.getInt(0);
-		cursor.close();
-		db.close();
-		return result;
-	}
-
-    //-----------database helper functions--------------
-    public static String implodeValues(Dashlet item,boolean withId)
-    {
-            ArrayList<String> values=item.implodeFieldValuesHelper(withId);
-            String output="";
-            for(String value:values)
-            {
-                    if(!output.isEmpty())
-                            output+=",";
-                    output+=(value!=null?"'"+value+"'":"null");
-            }
-            return output;
+    public Dashlet(Cursor c) {
+        id=c.getInt(c.getColumnIndex("id"));
+        name=c.getString(c.getColumnIndex("name"));
+        description=c.getString(c.getColumnIndex("description"));
+        type_id=c.getInt(c.getColumnIndex("type_id"));
     }
-    public static String implodeFields(boolean withId)
-    {
-            String output="";
-            for(String field:fields)
-            {
-                    if(!withId && field.contentEquals("id"))continue;
-                    if(!output.isEmpty())
-                            output+=",";
-                    output+=field;
-            }
-            return output;
-    }
-    public static String implodeFieldsWithValues(Dashlet item,boolean withId)
-    {
-            ArrayList<String> values=item.implodeFieldValuesHelper(true);//get entire list of values; whether the id is included will be dealt with later.
 
-            if(values.size()!=fields.length)
-            {
-                    System.err.println("Dashlet:implodeFieldsWithValues(): ERROR: values length does not match fields length");
-            }
+//	public String getUuid()
+//	{
+//		return id.toString()+"-";
+//	}
 
-            String output="";
-            for(int i=0;i<fields.length;i++)
-            {
-                    if(!withId && fields[i].contentEquals("id"))continue;
-                    if(!output.isEmpty())
-                            output+=",";
-                    output+=fields[i]+"="+(values.get(i)!=null?"'"+values.get(i)+"'":"null");
-            }
-            return output;
-    }	
-    public static String implodeFieldsWithTypes()
-    {
-            String output="";
-            for(int i=0;i<fields.length;i++)
-            {
-                    if(fields[i].contentEquals(fields[0]))//fields[0] being the primary key
-                            output+=fields[i]+" "+fieldtypes[i]+" PRIMARY KEY";
-                    else
-                            output+=","+fields[i]+" "+fieldtypes[i];
-            }
-            return output;
-    }	
-    public static String createTable()
-    {
-            return "CREATE TABLE IF NOT EXISTS "+tablename+" ("+implodeFieldsWithTypes()+" );";
+    public Integer getId() {
+            return id;
     }
-    public static String deleteTable()
+
+    public void setId(Integer id) {
+            this.id = id;
+    }
+
+    public String getName() {
+            return name;
+    }
+
+    public void setName(String name) {
+            this.name = name;
+    }
+
+    public String getDescription() {
+            return description;
+    }
+
+    public void setDescription(String description) {
+            this.description = description;
+    }
+
+    public Integer getTypeId() {
+            return type_id;
+    }
+
+    public void setTypeId(Integer type_id) {
+            this.type_id = type_id;
+    }
+
+
+    //database functions
+    public ArrayList<String> implodeFieldValuesHelper(boolean withId)
     {
-            return "DROP TABLE IF EXISTS "+tablename;
+            ArrayList<String> values=new ArrayList<String>(); 
+
+            //add values for each field here
+            if(withId)values.add(id!=null?id.toString():null);
+            values.add(name);
+            values.add(description);
+            values.add(type_id!=null?type_id.toString():null);
+
+            return values;
+    }
+    public void delete()
+    {
+            Dashlets.delete(this);
+    }
+    public void save()
+    {
+            if(id==null || id==0)
+                    id=Dashlets.insert(this);
+            else
+                    Dashlets.update(this);
+    }
+    @Override
+    public String toString()
+    {
+            return id.toString();
     }
 }

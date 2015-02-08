@@ -3,209 +3,120 @@ package models;
 import java.util.ArrayList;
 import java.util.Date;
 
-import utils.MyDatabaseHelper;
+import utils.StandardDateHelper;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 public class CategoryField {
     //------------FIELDS-----------
-    public static final String tablename=CategoryField.tablename;
-    public static String[] fields=CategoryField.fields;
-    public static String[] fieldtypes=CategoryField.fieldtypes;
+    public static final String tablename="category_fields";
+    //field names
+    public static String[] fields={
+            "id"
+            ,"category_id"
+            ,"label"
+            ,"rank"
+            ,"type"
+            };
+    //field types
+    public static String[] fieldtypes={
+            "int(11)"
+            ,"int(11)"
+            ,"varchar(50)"
+            ,"int(11)"
+            ,"int(11)"
+            };
     //-----------------------
-    //-------------------------TABLE FUNCTIONS---------------------
 
-    //-----------getter functions----------
-    public static CategoryField getById(Integer id) {
-            ArrayList<CategoryField> map=select(" where id = '"+id.toString()+"'");
-            for(CategoryField item:map)return item;
-            return null;
+    public Integer id;
+    public Integer category_id;
+    public String label;
+    public Integer rank;
+    public Integer type;
+
+    public CategoryField() {
     }
-    public static CategoryField getByCategoryId(Integer category_id)
-    {
-            ArrayList<CategoryField> items=select(" where category_id = '"+category_id.toString()+"'");
-            for(CategoryField item:items)return item;
-            return null;
-    }	
-    public static ArrayList<CategoryField> selectByCategoryId(Integer category_id)
-    {
-            return select(" where category_id = '"+category_id.toString()+"'");
-    }	
-    public static CategoryField getByLabel(String label)
-    {
-            ArrayList<CategoryField> items=select(" where label = '"+label+"'");
-            for(CategoryField item:items)return item;
-            return null;
-    }	
-    public static ArrayList<CategoryField> selectByLabel(String label)
-    {
-            return select(" where label = '"+label+"'");
-    }	
-    public static CategoryField getByRank(Integer rank)
-    {
-            ArrayList<CategoryField> items=select(" where rank = '"+rank.toString()+"'");
-            for(CategoryField item:items)return item;
-            return null;
-    }	
-    public static ArrayList<CategoryField> selectByRank(Integer rank)
-    {
-            return select(" where rank = '"+rank.toString()+"'");
-    }	
-    public static CategoryField getByType(Integer type)
-    {
-            ArrayList<CategoryField> items=select(" where type = '"+type.toString()+"'");
-            for(CategoryField item:items)return item;
-            return null;
-    }	
-    public static ArrayList<CategoryField> selectByType(Integer type)
-    {
-            return select(" where type = '"+type.toString()+"'");
-    }	
-    //-----------database functions--------------
-
-	public static void delete(CategoryField item)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		db.execSQL("delete from "+tablename+" where id = '"+item.getId()+"';");
-		db.close();
-	}
-	public static void delete(Integer id)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		db.execSQL("delete from "+tablename+" where id = '"+id+"';");
-		db.close();
-	}
-	public static Integer insert(CategoryField item)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		
-		if(fieldtypes[0].contains("int"))
-		{
-			db.execSQL("INSERT INTO "+tablename+" ("+implodeFields(false)+")VALUES (" 
-					+implodeValues(item, false)
-					+");");
-		}
-		else
-		if(fieldtypes[0].contains("varchar"))
-		{
-			db.execSQL("INSERT INTO "+tablename+" ("+implodeFields(true)+")VALUES (" 
-					+implodeValues(item, true)
-					+");");
-		}
-
-            //fetch last insert id
-		Cursor cursor = db.rawQuery("SELECT last_insert_rowid() FROM "+tablename+" ", null);
-		cursor.moveToFirst();
-		Integer result=cursor.getInt(0);
-		cursor.close();
-
-		db.close();
-		return result;
-	}
-	public static void update(CategoryField item)
-	{
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-
-		db.execSQL(
-		"update "+tablename+" set "+implodeFieldsWithValues(item,false)+" where id = '"+item.getId()
-		+"';");
-		db.close();
-	}
-	public static ArrayList<CategoryField> select(String criteria) {
-		ArrayList<CategoryField> items = new ArrayList<CategoryField>();
-		SQLiteDatabase db = MyDatabaseHelper.getInstance()
-				.getWritableDatabase();
-
-		Cursor cursor = db.rawQuery("SELECT * FROM "+tablename+" "+criteria, null);
-		items = new ArrayList<CategoryField>();
-		while (cursor.moveToNext()) {
-			items.add(new CategoryField(cursor));
-		}
-		cursor.close();
-		db.close();
-		return items;
-	}
-	public static Integer count(String criteria) {
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		Cursor cursor = db.rawQuery("SELECT count(*) FROM "+tablename+" "+criteria, null);
-		cursor.moveToFirst();
-		Integer result=cursor.getInt(0);
-		cursor.close();
-		db.close();
-		return result;
-	}
-	public static Integer getLastInsertId() {
-		SQLiteDatabase db = MyDatabaseHelper.getInstance().getWritableDatabase();
-		Cursor cursor = db.rawQuery("SELECT last_insert_rowid() FROM "+tablename+" ", null);
-		cursor.moveToFirst();
-		Integer result=cursor.getInt(0);
-		cursor.close();
-		db.close();
-		return result;
-	}
-
-    //-----------database helper functions--------------
-    public static String implodeValues(CategoryField item,boolean withId)
-    {
-            ArrayList<String> values=item.implodeFieldValuesHelper(withId);
-            String output="";
-            for(String value:values)
-            {
-                    if(!output.isEmpty())
-                            output+=",";
-                    output+=(value!=null?"'"+value+"'":"null");
-            }
-            return output;
+    public CategoryField(Cursor c) {
+        id=c.getInt(c.getColumnIndex("id"));
+        category_id=c.getInt(c.getColumnIndex("category_id"));
+        label=c.getString(c.getColumnIndex("label"));
+        rank=c.getInt(c.getColumnIndex("rank"));
+        type=c.getInt(c.getColumnIndex("type"));
     }
-    public static String implodeFields(boolean withId)
-    {
-            String output="";
-            for(String field:fields)
-            {
-                    if(!withId && field.contentEquals("id"))continue;
-                    if(!output.isEmpty())
-                            output+=",";
-                    output+=field;
-            }
-            return output;
-    }
-    public static String implodeFieldsWithValues(CategoryField item,boolean withId)
-    {
-            ArrayList<String> values=item.implodeFieldValuesHelper(true);//get entire list of values; whether the id is included will be dealt with later.
 
-            if(values.size()!=fields.length)
-            {
-                    System.err.println("CategoryField:implodeFieldsWithValues(): ERROR: values length does not match fields length");
-            }
+//	public String getUuid()
+//	{
+//		return id.toString()+"-";
+//	}
 
-            String output="";
-            for(int i=0;i<fields.length;i++)
-            {
-                    if(!withId && fields[i].contentEquals("id"))continue;
-                    if(!output.isEmpty())
-                            output+=",";
-                    output+=fields[i]+"="+(values.get(i)!=null?"'"+values.get(i)+"'":"null");
-            }
-            return output;
-    }	
-    public static String implodeFieldsWithTypes()
-    {
-            String output="";
-            for(int i=0;i<fields.length;i++)
-            {
-                    if(fields[i].contentEquals(fields[0]))//fields[0] being the primary key
-                            output+=fields[i]+" "+fieldtypes[i]+" PRIMARY KEY";
-                    else
-                            output+=","+fields[i]+" "+fieldtypes[i];
-            }
-            return output;
-    }	
-    public static String createTable()
-    {
-            return "CREATE TABLE IF NOT EXISTS "+tablename+" ("+implodeFieldsWithTypes()+" );";
+    public Integer getId() {
+            return id;
     }
-    public static String deleteTable()
+
+    public void setId(Integer id) {
+            this.id = id;
+    }
+
+    public Integer getCategoryId() {
+            return category_id;
+    }
+
+    public void setCategoryId(Integer category_id) {
+            this.category_id = category_id;
+    }
+
+    public String getLabel() {
+            return label;
+    }
+
+    public void setLabel(String label) {
+            this.label = label;
+    }
+
+    public Integer getRank() {
+            return rank;
+    }
+
+    public void setRank(Integer rank) {
+            this.rank = rank;
+    }
+
+    public Integer getType() {
+            return type;
+    }
+
+    public void setType(Integer type) {
+            this.type = type;
+    }
+
+
+    //database functions
+    public ArrayList<String> implodeFieldValuesHelper(boolean withId)
     {
-            return "DROP TABLE IF EXISTS "+tablename;
+            ArrayList<String> values=new ArrayList<String>(); 
+
+            //add values for each field here
+            if(withId)values.add(id!=null?id.toString():null);
+            values.add(category_id!=null?category_id.toString():null);
+            values.add(label);
+            values.add(rank!=null?rank.toString():null);
+            values.add(type!=null?type.toString():null);
+
+            return values;
+    }
+    public void delete()
+    {
+            CategoryFields.delete(this);
+    }
+    public void save()
+    {
+            if(id==null || id==0)
+                    id=CategoryFields.insert(this);
+            else
+                    CategoryFields.update(this);
+    }
+    @Override
+    public String toString()
+    {
+            return id.toString();
     }
 }
