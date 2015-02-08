@@ -1,11 +1,7 @@
 package com.itforhumanity.mypda;
 
-import java.util.Date;
 import java.util.Locale;
 
-import models.Input;
-import models.Inputs;
-import utils.DateTimeHelper;
 import utils.MyApplicationContextHolder;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -15,12 +11,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import fragments.DummySectionFragment;
+import fragments.MyFragment;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -124,11 +117,22 @@ public class MainActivity extends FragmentActivity implements
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
-			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			fragment.setArguments(args);
-			return fragment;
+			if(position==2)
+			{
+				Fragment fragment = new MyFragment();
+				Bundle args = new Bundle();
+				args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+				fragment.setArguments(args);
+				return fragment;
+			}
+			else
+			{
+				Fragment fragment = new DummySectionFragment();
+				Bundle args = new Bundle();
+				args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+				fragment.setArguments(args);
+				return fragment;
+			}
 		}
 
 		@Override
@@ -152,31 +156,5 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main_dummy,
-					container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
-			return rootView;
-		}
-	}
 
 }
