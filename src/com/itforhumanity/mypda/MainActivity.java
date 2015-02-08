@@ -3,7 +3,6 @@ package com.itforhumanity.mypda;
 import java.util.Locale;
 
 import utils.MyApplicationContextHolder;
-import utils.MyDialogHelper;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -12,17 +11,17 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import fragments.AnalysisFragment;
 import fragments.DashboardFragment;
 import fragments.InputFragment;
+import fragments.InputListFragment;
 import fragments.ProcessingFragment;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 	InputFragment inputFragment;
+	InputListFragment inputListFragment;
 	AnalysisFragment analysisFragment;
 	ProcessingFragment processingFragment;
 	DashboardFragment dashboardFragment;
@@ -50,6 +49,7 @@ public class MainActivity extends FragmentActivity implements
 		//setup the fragments
 		Bundle args;
 		inputFragment = new InputFragment(MainActivity.this);
+		inputListFragment = new InputListFragment(MainActivity.this);
 
 		analysisFragment = new AnalysisFragment();
 //		args = new Bundle();
@@ -213,21 +213,27 @@ public class MainActivity extends FragmentActivity implements
 				//Input Fragment 
 				case 0:
 					return inputFragment;
-				//Analysis Fragment 
 				case 1:
+					return inputListFragment;
+				//Analysis Fragment 
+				case 2:
+				case 3:
 					return analysisFragment;
 				//Processing Fragment 
-				case 2:
+				case 4:
+				case 5:
 					return processingFragment;
 				//Dashboard Fragment 		
-				case 3:default:
+				case 6:
+				case 7:
+				default:
 					return dashboardFragment;
 			}
 		}
 		@Override
 		public int getCount() {
 			// Show 3 total pages.
-			return 4;
+			return 8;
 		}
 
 		@Override
@@ -237,17 +243,22 @@ public class MainActivity extends FragmentActivity implements
 			//Input Fragment label
 			case 0:
 				return getString(R.string.title_section1).toUpperCase(l);
-			//Analysis Fragment label
 			case 1:
+				return getString(R.string.title_section1list).toUpperCase(l);
+			//Analysis Fragment label
+			case 2:
+			case 3:
 				return getString(R.string.title_section2).toUpperCase(l);
 			//Processing Fragment label
-			case 2:
+			case 4:
+			case 5:
 				return getString(R.string.title_section3).toUpperCase(l);
 			//Dashboard Fragment label
-			case 3:
+			case 6:
+			case 7:
+			default:
 				return getString(R.string.title_section4).toUpperCase(l);
 			}
-			return null;
 		}
 	}
 

@@ -3,6 +3,8 @@ package fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.itforhumanity.mypda.MainActivity;
 import com.itforhumanity.mypda.R;
 
 public class InputFragment extends Fragment {
@@ -45,8 +46,8 @@ public class InputFragment extends Fragment {
 //				trans.addToBackStack(null);
 //				trans.commit();
 //				Log.i("","hi");
-//             	
-            	((MainActivity)getActivity()).switchFragment(1);
+             	
+//            	((MainActivity)getActivity()).switchFragment(1);
             }
 
         });		
