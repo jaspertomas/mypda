@@ -11,12 +11,20 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
-import fragments.DummySectionFragment;
-import fragments.MyFragment;
+import android.view.View;
+import fragments.AnalysisFragment;
+import fragments.DashboardFragment;
+import fragments.InputFragment;
+import fragments.ProcessingFragment;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
+	InputFragment inputFragment;
+	AnalysisFragment analysisFragment;
+	ProcessingFragment processingFragment;
+	DashboardFragment dashboardFragment;
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -117,21 +125,37 @@ public class MainActivity extends FragmentActivity implements
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
-			if(position==2)
+			if(position==0)
 			{
-				Fragment fragment = new MyFragment();
+				inputFragment = new InputFragment();
 				Bundle args = new Bundle();
-				args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-				fragment.setArguments(args);
-				return fragment;
+				args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
+				inputFragment.setArguments(args);
+				return inputFragment;
+			}
+			else if(position==1)
+			{
+				analysisFragment = new AnalysisFragment();
+				Bundle args = new Bundle();
+				args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
+				analysisFragment.setArguments(args);
+				return analysisFragment;
+			}
+			else if(position==2)
+			{
+				processingFragment = new ProcessingFragment();
+				Bundle args = new Bundle();
+				args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
+				processingFragment.setArguments(args);
+				return processingFragment;
 			}
 			else
 			{
-				Fragment fragment = new DummySectionFragment();
+				dashboardFragment = new DashboardFragment();
 				Bundle args = new Bundle();
-				args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-				fragment.setArguments(args);
-				return fragment;
+				args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
+				dashboardFragment.setArguments(args);
+				return dashboardFragment;
 			}
 		}
 
@@ -156,5 +180,13 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
-
+	//------------------Input Fragment methods----------------
+	public void inputSave(View button)
+	{
+		if(inputFragment==null)return;
+		Log.i("","hi");
+	}
+	//------------------Analysis Fragment methods----------------
+	//------------------Processing Fragment methods----------------
+	//------------------Dashboard Fragment methods----------------
 }
