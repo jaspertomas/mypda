@@ -199,7 +199,7 @@ public class MainActivity extends FragmentActivity implements
 			{
 				//Input Fragment 
 				case 0:
-					inputFragment = new InputFragment();
+					inputFragment = new InputFragment(MainActivity.this);
 					return inputFragment;
 				//Analysis Fragment 
 				case 1:
@@ -249,11 +249,11 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	//------------------Input Fragment methods----------------
-	public void inputSave(View button)
-	{
-		if(inputFragment==null)return;
-		Log.i("","hi");
-	}
+//	public void inputSave(View button)
+//	{
+//		if(inputFragment==null)return;
+//		Log.i("","hi");
+//	}
 	//------------------Analysis Fragment methods----------------
 	//------------------Processing Fragment methods----------------
 	//------------------Dashboard Fragment methods----------------

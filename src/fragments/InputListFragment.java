@@ -8,28 +8,34 @@ import models.Inputs;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.itforhumanity.mypda.MainActivity;
 import com.itforhumanity.mypda.R;
 
 public class InputListFragment extends Fragment {
 	public static final String ARG_SECTION_NUMBER = "section_number";
 	private final String tablename="inputs";
-	public static ArrayList<Input> doctors;
-	ArrayList<String> doctornames;
+	public static ArrayList<Input> listItems;
+	ArrayList<String> listLabels;
 	Context context;
 
 	View rootView;
 	EditText txtSearch;
+	ListView listView;
+	
 	
 	public InputListFragment(Context context) {
 		this.context=context;
@@ -37,16 +43,16 @@ public class InputListFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.fragment_input, container, false);
+		rootView = inflater.inflate(R.layout.fragment_input_list, container, false);
 		txtSearch = (EditText) rootView.findViewById(R.id.txtSearch);
 		//this is how to extract data from the bundle
 		//getArguments().getInt(ARG_SECTION_NUMBER))
 		
-        doctorListView = (ListView) rootView.findViewById (R.id.tasks_list_view);
+        listView = (ListView) rootView.findViewById (R.id.tasks_list_view);
 
 		//---------SETUP SEARCH BAR--------
-		   searchbar = (EditText)rootView.findViewById(R.id.txtSearch);
-		   searchbar.addTextChangedListener(new TextWatcher(){
+		   txtSearch = (EditText)rootView.findViewById(R.id.txtSearch);
+		   txtSearch.addTextChangedListener(new TextWatcher(){
 		        public void afterTextChanged(Editable s) {
 		    		
 		        	rebuildDoctorListView();
@@ -65,27 +71,24 @@ public class InputListFragment extends Fragment {
 		    }); 		
 
 		//=====read doctors table and add results to listview=======
-		doctors= new ArrayList<Input>();
-		doctornames= new ArrayList<String>();
+		listItems= new ArrayList<Input>();
+		listLabels= new ArrayList<String>();
 
     	rebuildDoctorListView();
 
 
-        if (doctorListView != null) {
+        if (listView != null) {
 //            doctorListView.setAdapter(new ArrayAdapter<Doctor>(ChooseDoctorActivity.this,
 //              android.R.layout.simple_list_item_1, doctors));
-            doctorListView.setAdapter(new ArrayAdapter<String>(context,
-                    android.R.layout.simple_list_item_1, doctornames));
+            listView.setAdapter(new ArrayAdapter<String>(context,
+                    android.R.layout.simple_list_item_1, listLabels));
             
             //this displays the puzzle
 //            doctorListView.setOnItemClickListener(getPuzzleOnItemClickListener());	
             
             //this displays the new menu style edetail
-            doctorListView.setOnItemClickListener(getMenuOnItemClickListener());	
-        
-        }	   		
-		
-		
+            listView.setOnItemClickListener(getMenuOnItemClickListener());	
+        }
 		return rootView;
 	}
 //	@Override
@@ -105,31 +108,28 @@ public class InputListFragment extends Fragment {
 	}
 
 
-	EditText searchbar;
-	ListView doctorListView;
-	
 	protected void rebuildDoctorListView() {
-    	doctornames.clear();
-    	doctors.clear();
+    	listLabels.clear();
+    	listItems.clear();
     	boolean match=false;
         for(Input doctor:Inputs.select(""))
         {
         	
-    		if(searchbar.getText().toString().isEmpty())
+    		if(txtSearch.getText().toString().isEmpty())
         		match=true;//include all doctors if no search keyword is entered
     		else
     		{
     			//if search keyword is found in doctor name, match=true
-    			match=(Pattern.compile(Pattern.quote(searchbar.getText().toString()), Pattern.CASE_INSENSITIVE).matcher(doctor.getContent()).find());
+    			match=(Pattern.compile(Pattern.quote(txtSearch.getText().toString()), Pattern.CASE_INSENSITIVE).matcher(doctor.getContent()).find());
     		}
             		
         	if(match)
         	{
-          	  	doctors.add(doctor);
-          	  	doctornames.add(doctor.getDateCreated()+": "+doctor.getContent());
+          	  	listItems.add(doctor);
+          	  	listLabels.add(doctor.getDateCreated()+": "+doctor.getContent());
         	}
         }
-        doctorListView.invalidateViews();
+        listView.invalidateViews();
 
 		
 	}
@@ -140,7 +140,7 @@ public class InputListFragment extends Fragment {
 	 	{
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
 		    {
-				Input doc=doctors.get(position);
+				Input doc=listItems.get(position);
 
 //				ContentMenuController.getInstance().setDoctor(doc);
 //				Intent intent = new Intent(ChooseDoctorActivity.this, ChooseTrackActivity.class);

@@ -1,0 +1,3 @@
+
+cool techniques on fragments
+http://developer.android.com/training/basics/fragments/index.html
