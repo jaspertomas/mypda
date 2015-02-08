@@ -34,4 +34,13 @@ public class AnalysisFragment extends Fragment {
 				ARG_SECTION_NUMBER)));
 		return rootView;
 	}
+	public void onTabSelected()
+	{
+	}
+	public void onTabUnselected()
+	{
+	}
+	public void onTabReselected()
+	{
+	}
 }

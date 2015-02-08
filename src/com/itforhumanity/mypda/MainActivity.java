@@ -3,6 +3,7 @@ package com.itforhumanity.mypda;
 import java.util.Locale;
 
 import utils.MyApplicationContextHolder;
+import utils.MyDialogHelper;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -98,16 +99,87 @@ public class MainActivity extends FragmentActivity implements
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
+		
+		switch(tab.getPosition())
+		{
+			//Input Fragment 
+			case 0:
+				if(inputFragment==null)break;
+				inputFragment.onTabSelected();
+				break;
+			//Analysis Fragment 
+			case 1:
+				if(analysisFragment==null)break;
+				analysisFragment.onTabSelected();
+				break;
+			//Processing Fragment 
+			case 2:
+//				MyDialogHelper.popup(MainActivity.this, "Hi!");
+				if(processingFragment==null)break;
+				processingFragment.onTabSelected();
+				break;
+			//DashBoard Fragment 
+			case 3:default:
+				if(dashboardFragment==null)break;
+				dashboardFragment.onTabSelected();
+				break;
+		}
 	}
 
 	@Override
 	public void onTabUnselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
+		switch(tab.getPosition())
+		{
+			//Input Fragment 
+			case 0:
+				if(inputFragment==null)break;
+				inputFragment.onTabUnselected();
+				break;
+			//Analysis Fragment 
+			case 1:
+				if(analysisFragment==null)break;
+				analysisFragment.onTabUnselected();
+				break;
+			//Processing Fragment 
+			case 2:
+				if(processingFragment==null)break;
+				processingFragment.onTabUnselected();
+				break;
+			//DashBoard Fragment 
+			case 3:default:
+				if(dashboardFragment==null)break;
+				dashboardFragment.onTabUnselected();
+				break;
+		}
 	}
 
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
+		switch(tab.getPosition())
+		{
+			//Input Fragment 
+			case 0:
+				if(inputFragment==null)break;
+				inputFragment.onTabReselected();
+				break;
+			//Analysis Fragment 
+			case 1:
+				if(analysisFragment==null)break;
+				analysisFragment.onTabReselected();
+				break;
+			//Processing Fragment 
+			case 2:
+				if(processingFragment==null)break;
+				processingFragment.onTabReselected();
+				break;
+			//DashBoard Fragment 
+			case 3:default:
+				if(dashboardFragment==null)break;
+				dashboardFragment.onTabReselected();
+				break;
+		}
 	}
 
 	/**
@@ -122,43 +194,33 @@ public class MainActivity extends FragmentActivity implements
 
 		@Override
 		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
-			if(position==0)
+			Bundle args = new Bundle();
+			switch(position)
 			{
-				inputFragment = new InputFragment();
-				Bundle args = new Bundle();
-				args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
-				inputFragment.setArguments(args);
-				return inputFragment;
-			}
-			else if(position==1)
-			{
-				analysisFragment = new AnalysisFragment();
-				Bundle args = new Bundle();
-				args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
-				analysisFragment.setArguments(args);
-				return analysisFragment;
-			}
-			else if(position==2)
-			{
-				processingFragment = new ProcessingFragment();
-				Bundle args = new Bundle();
-				args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
-				processingFragment.setArguments(args);
-				return processingFragment;
-			}
-			else
-			{
-				dashboardFragment = new DashboardFragment();
-				Bundle args = new Bundle();
-				args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
-				dashboardFragment.setArguments(args);
-				return dashboardFragment;
+				//Input Fragment 
+				case 0:
+					inputFragment = new InputFragment();
+					return inputFragment;
+				//Analysis Fragment 
+				case 1:
+					analysisFragment = new AnalysisFragment();
+					args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
+					analysisFragment.setArguments(args);
+					return analysisFragment;
+				//Processing Fragment 
+				case 2:
+					processingFragment = new ProcessingFragment();
+					args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
+					processingFragment.setArguments(args);
+					return processingFragment;
+				//Dashboard Fragment 		
+				case 3:default:
+					dashboardFragment = new DashboardFragment();
+					args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
+					dashboardFragment.setArguments(args);
+					return dashboardFragment;
 			}
 		}
-
 		@Override
 		public int getCount() {
 			// Show 3 total pages.
@@ -169,12 +231,16 @@ public class MainActivity extends FragmentActivity implements
 		public CharSequence getPageTitle(int position) {
 			Locale l = Locale.getDefault();
 			switch (position) {
+			//Input Fragment label
 			case 0:
 				return getString(R.string.title_section1).toUpperCase(l);
+			//Analysis Fragment label
 			case 1:
 				return getString(R.string.title_section2).toUpperCase(l);
+			//Processing Fragment label
 			case 2:
 				return getString(R.string.title_section3).toUpperCase(l);
+			//Dashboard Fragment label
 			case 3:
 				return getString(R.string.title_section4).toUpperCase(l);
 			}

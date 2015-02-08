@@ -10,29 +10,35 @@ import android.widget.EditText;
 
 import com.itforhumanity.mypda.R;
 
-/**
- * A dummy fragment representing a section of the app, but that simply
- * displays dummy text.
- */
 public class InputFragment extends Fragment {
-	/**
-	 * The fragment argument representing the section number for this
-	 * fragment.
-	 */
 	public static final String ARG_SECTION_NUMBER = "section_number";
 
+	EditText txtInput;
+	
 	public InputFragment() {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_input,
-				container, false);
-		EditText txtInput = (EditText) rootView
-				.findViewById(R.id.txtInput);
-		txtInput.setText(Integer.toString(getArguments().getInt(
-				ARG_SECTION_NUMBER)));
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_input, container, false);
+		txtInput = (EditText) rootView.findViewById(R.id.txtInput);
+		//this is how to extract data from the bundle
+		//getArguments().getInt(ARG_SECTION_NUMBER))
 		return rootView;
+	}
+//	@Override
+//	public void onStart()
+//	{
+//		super.onStart();
+//	}
+	public void onTabSelected()
+	{
+		txtInput.setText("");
+	}
+	public void onTabUnselected()
+	{
+	}
+	public void onTabReselected()
+	{
 	}
 }
