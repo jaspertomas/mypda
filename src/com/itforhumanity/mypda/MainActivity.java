@@ -257,4 +257,7 @@ public class MainActivity extends FragmentActivity implements
 	//------------------Analysis Fragment methods----------------
 	//------------------Processing Fragment methods----------------
 	//------------------Dashboard Fragment methods----------------
+    public void switchFragment(int target){
+        mViewPager.setCurrentItem(target);
+   }
 }
