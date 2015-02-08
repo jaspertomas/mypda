@@ -30,8 +30,9 @@ public class ProcessingFragment extends Fragment {
 				container, false);
 		TextView dummyTextView = (TextView) rootView
 				.findViewById(R.id.section_label);
-		dummyTextView.setText(Integer.toString(getArguments().getInt(
-				ARG_SECTION_NUMBER)));
+//		dummyTextView.setText(Integer.toString(getArguments().getInt(
+//				ARG_SECTION_NUMBER)));
+		dummyTextView.setText("ProcessingFragment");
 		return rootView;
 	}
 	public void onTabSelected()

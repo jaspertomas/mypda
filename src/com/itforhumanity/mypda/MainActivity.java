@@ -47,6 +47,20 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		//setup the fragments
+		Bundle args;
+		inputFragment = new InputFragment(MainActivity.this);
+
+		analysisFragment = new AnalysisFragment();
+//		args = new Bundle();
+//		args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
+//		analysisFragment.setArguments(args);
+
+		processingFragment = new ProcessingFragment();
+
+		dashboardFragment = new DashboardFragment();
+		
+		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -100,86 +114,86 @@ public class MainActivity extends FragmentActivity implements
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
 		
-		switch(tab.getPosition())
-		{
-			//Input Fragment 
-			case 0:
-				if(inputFragment==null)break;
-				inputFragment.onTabSelected();
-				break;
-			//Analysis Fragment 
-			case 1:
-				if(analysisFragment==null)break;
-				analysisFragment.onTabSelected();
-				break;
-			//Processing Fragment 
-			case 2:
-//				MyDialogHelper.popup(MainActivity.this, "Hi!");
-				if(processingFragment==null)break;
-				processingFragment.onTabSelected();
-				break;
-			//DashBoard Fragment 
-			case 3:default:
-				if(dashboardFragment==null)break;
-				dashboardFragment.onTabSelected();
-				break;
-		}
+//		switch(tab.getPosition())
+//		{
+//			//Input Fragment 
+//			case 0:
+//				if(inputFragment==null)break;
+//				inputFragment.onTabSelected();
+//				break;
+//			//Analysis Fragment 
+//			case 1:
+//				if(analysisFragment==null)break;
+//				analysisFragment.onTabSelected();
+//				break;
+//			//Processing Fragment 
+//			case 2:
+////				MyDialogHelper.popup(MainActivity.this, "Hi!");
+//				if(processingFragment==null)break;
+//				processingFragment.onTabSelected();
+//				break;
+//			//DashBoard Fragment 
+//			case 3:default:
+//				if(dashboardFragment==null)break;
+//				dashboardFragment.onTabSelected();
+//				break;
+//		}
 	}
 
 	@Override
 	public void onTabUnselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-		switch(tab.getPosition())
-		{
-			//Input Fragment 
-			case 0:
-				if(inputFragment==null)break;
-				inputFragment.onTabUnselected();
-				break;
-			//Analysis Fragment 
-			case 1:
-				if(analysisFragment==null)break;
-				analysisFragment.onTabUnselected();
-				break;
-			//Processing Fragment 
-			case 2:
-				if(processingFragment==null)break;
-				processingFragment.onTabUnselected();
-				break;
-			//DashBoard Fragment 
-			case 3:default:
-				if(dashboardFragment==null)break;
-				dashboardFragment.onTabUnselected();
-				break;
-		}
+//		switch(tab.getPosition())
+//		{
+//			//Input Fragment 
+//			case 0:
+//				if(inputFragment==null)break;
+//				inputFragment.onTabUnselected();
+//				break;
+//			//Analysis Fragment 
+//			case 1:
+//				if(analysisFragment==null)break;
+//				analysisFragment.onTabUnselected();
+//				break;
+//			//Processing Fragment 
+//			case 2:
+//				if(processingFragment==null)break;
+//				processingFragment.onTabUnselected();
+//				break;
+//			//DashBoard Fragment 
+//			case 3:default:
+//				if(dashboardFragment==null)break;
+//				dashboardFragment.onTabUnselected();
+//				break;
+//		}
 	}
 
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-		switch(tab.getPosition())
-		{
-			//Input Fragment 
-			case 0:
-				if(inputFragment==null)break;
-				inputFragment.onTabReselected();
-				break;
-			//Analysis Fragment 
-			case 1:
-				if(analysisFragment==null)break;
-				analysisFragment.onTabReselected();
-				break;
-			//Processing Fragment 
-			case 2:
-				if(processingFragment==null)break;
-				processingFragment.onTabReselected();
-				break;
-			//DashBoard Fragment 
-			case 3:default:
-				if(dashboardFragment==null)break;
-				dashboardFragment.onTabReselected();
-				break;
-		}
+//		switch(tab.getPosition())
+//		{
+//			//Input Fragment 
+//			case 0:
+//				if(inputFragment==null)break;
+//				inputFragment.onTabReselected();
+//				break;
+//			//Analysis Fragment 
+//			case 1:
+//				if(analysisFragment==null)break;
+//				analysisFragment.onTabReselected();
+//				break;
+//			//Processing Fragment 
+//			case 2:
+//				if(processingFragment==null)break;
+//				processingFragment.onTabReselected();
+//				break;
+//			//DashBoard Fragment 
+//			case 3:default:
+//				if(dashboardFragment==null)break;
+//				dashboardFragment.onTabReselected();
+//				break;
+//		}
 	}
 
 	/**
@@ -194,30 +208,19 @@ public class MainActivity extends FragmentActivity implements
 
 		@Override
 		public Fragment getItem(int position) {
-			Bundle args = new Bundle();
 			switch(position)
 			{
 				//Input Fragment 
 				case 0:
-					inputFragment = new InputFragment(MainActivity.this);
 					return inputFragment;
 				//Analysis Fragment 
 				case 1:
-					analysisFragment = new AnalysisFragment();
-					args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
-					analysisFragment.setArguments(args);
 					return analysisFragment;
 				//Processing Fragment 
 				case 2:
-					processingFragment = new ProcessingFragment();
-					args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
-					processingFragment.setArguments(args);
 					return processingFragment;
 				//Dashboard Fragment 		
 				case 3:default:
-					dashboardFragment = new DashboardFragment();
-					args.putInt(ProcessingFragment.ARG_SECTION_NUMBER, position + 1);
-					dashboardFragment.setArguments(args);
 					return dashboardFragment;
 			}
 		}
