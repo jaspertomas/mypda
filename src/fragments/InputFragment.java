@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.itforhumanity.mypda.MainActivity;
 import com.itforhumanity.mypda.R;
@@ -24,6 +25,7 @@ public class InputFragment extends Fragment {
 	View rootView;
 	EditText txtInput;
 	Button btnSave,btnDelete,btnCategorize,btnList;
+	LinearLayout inputLayout,listLayout;
 	
 	Context context;
 	
@@ -33,6 +35,10 @@ public class InputFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_input, container, false);
+
+		inputLayout = (LinearLayout) rootView.findViewById(R.id.inputlayout);
+		listLayout = (LinearLayout) rootView.findViewById(R.id.listlayout);
+		
 		txtInput = (EditText) rootView.findViewById(R.id.txtInput);
 		//this is how to extract data from the bundle
 		//getArguments().getInt(ARG_SECTION_NUMBER))
@@ -134,6 +140,8 @@ public class InputFragment extends Fragment {
 		
 		//for now
 		//switch to tab 2 (input list)
-		((MainActivity)getActivity()).switchFragment(2);
+		//((MainActivity)getActivity()).switchFragment(2);
+		inputLayout.setVisibility(View.GONE);
+		listLayout.setVisibility(View.VISIBLE);
 	}
 }
