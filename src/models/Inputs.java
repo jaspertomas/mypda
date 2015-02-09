@@ -51,6 +51,26 @@ public class Inputs {
     {
             return select(" where date_modified = '"+date_modified.toString()+"'");
     }	
+    public static Input getByIsAnalyzed(Integer is_analyzed)
+    {
+            ArrayList<Input> items=select(" where is_analyzed = '"+is_analyzed.toString()+"'");
+            for(Input item:items)return item;
+            return null;
+    }	
+    public static ArrayList<Input> selectByIsAnalyzed(Integer is_analyzed)
+    {
+            return select(" where is_analyzed = '"+is_analyzed.toString()+"'");
+    }	
+    public static Input getByCategoryId(Integer category_id)
+    {
+            ArrayList<Input> items=select(" where category_id = '"+category_id.toString()+"'");
+            for(Input item:items)return item;
+            return null;
+    }	
+    public static ArrayList<Input> selectByCategoryId(Integer category_id)
+    {
+            return select(" where category_id = '"+category_id.toString()+"'");
+    }	
     //-----------database functions--------------
 
 	public static void delete(Input item)

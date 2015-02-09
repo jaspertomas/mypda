@@ -27,5 +27,23 @@
         android:layout_height="wrap_content"
         android:onClick="inputSave"
         android:text="@string/save" />
-	
+	<Button
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="inputDelete"
+        android:text="@string/delete" />
+	<Button
+        android:id="@+id/btnCategorize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="inputCategorize"
+        android:text="@string/categorize" />
+	<Button
+        android:id="@+id/btnList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="inputList"
+        android:text="@string/list" />
+			
 </LinearLayout>
