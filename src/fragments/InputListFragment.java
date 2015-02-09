@@ -55,7 +55,7 @@ public class InputListFragment extends Fragment {
 		   txtSearch.addTextChangedListener(new TextWatcher(){
 		        public void afterTextChanged(Editable s) {
 		    		
-		        	rebuildDoctorListView();
+		        	rebuildListView();
 //		        	doctors.clear();
 //		            for(Doctor doctor:Doctors.getDoctors().values())
 //		            {
@@ -74,7 +74,7 @@ public class InputListFragment extends Fragment {
 		listItems= new ArrayList<Input>();
 		listLabels= new ArrayList<String>();
 
-    	rebuildDoctorListView();
+    	rebuildListView();
 
 
         if (listView != null) {
@@ -108,11 +108,11 @@ public class InputListFragment extends Fragment {
 	}
 
 
-	protected void rebuildDoctorListView() {
+	protected void rebuildListView() {
     	listLabels.clear();
     	listItems.clear();
     	boolean match=false;
-        for(Input doctor:Inputs.select(""))
+        for(Input input:Inputs.select(""))
         {
         	
     		if(txtSearch.getText().toString().isEmpty())
@@ -120,13 +120,13 @@ public class InputListFragment extends Fragment {
     		else
     		{
     			//if search keyword is found in doctor name, match=true
-    			match=(Pattern.compile(Pattern.quote(txtSearch.getText().toString()), Pattern.CASE_INSENSITIVE).matcher(doctor.getContent()).find());
+    			match=(Pattern.compile(Pattern.quote(txtSearch.getText().toString()), Pattern.CASE_INSENSITIVE).matcher(input.getContent()).find());
     		}
             		
         	if(match)
         	{
-          	  	listItems.add(doctor);
-          	  	listLabels.add(doctor.getDateCreated()+": "+doctor.getContent());
+          	  	listItems.add(input);
+          	  	listLabels.add(input.getDateCreated()+": "+input.getContent());
         	}
         }
         listView.invalidateViews();

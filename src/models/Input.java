@@ -33,8 +33,8 @@ public class Input {
     public String content;
     public Date date_created;
     public Date date_modified;
-    public Integer is_analyzed;
-    public Integer category_id;
+    public Integer is_analyzed=0;
+    public Integer category_id=0;
 
     public Input() {
     }

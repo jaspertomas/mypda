@@ -28,30 +28,36 @@
 	    android:gravity="top|left"
 	    android:scrollbars="vertical"
 	/>
-		<Button
-	        android:id="@+id/btnSave"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:onClick="inputSave"
-	        android:text="@string/save" />
-		<Button
-	        android:id="@+id/btnDelete"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:onClick="inputDelete"
-	        android:text="@string/delete" />
-		<Button
-	        android:id="@+id/btnCategorize"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:onClick="inputCategorize"
-	        android:text="@string/categorize" />
-		<Button
-	        android:id="@+id/btnList"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:onClick="inputList"
-	        android:text="@string/list" />
+	    <LinearLayout  
+	        android:orientation="horizontal"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+				
+			<Button
+		        android:id="@+id/btnSave"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:onClick="inputSave"
+		        android:text="@string/save" />
+			<Button
+		        android:id="@+id/btnDelete"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:onClick="inputDelete"
+		        android:text="@string/delete" />
+			<Button
+		        android:id="@+id/btnCategorize"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:onClick="inputCategorize"
+		        android:text="@string/categorize" />
+			<Button
+		        android:id="@+id/btnList"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:onClick="inputList"
+		        android:text="@string/list" />
+		</LinearLayout>	
 	</LinearLayout>	
 	
 	<LinearLayout
@@ -81,11 +87,12 @@
 	            android:layout_weight="1"
 	            />
 	
-	<!--         <Button android:id="@+id/sort"
+	         <Button android:id="@+id/btnBack"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="@string/search"
-	            /> -->
+		        android:onClick="listBack"
+	            android:text="@string/back"
+	            /> 
 	
 	    </LinearLayout>
 	    

@@ -14,5 +14,6 @@
     <string name="delete">Delete</string>
     <string name="list">List</string>
     <string name="categorize">Categorize</string>
+    <string name="back">Back</string>
     
 </resources>
