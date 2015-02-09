@@ -213,19 +213,14 @@ public class MainActivity extends FragmentActivity implements
 				//Input Fragment 
 				case 0:
 					return inputFragment;
-				case 1:
-					return inputListFragment;
 				//Analysis Fragment 
-				case 2:
-				case 3:
+				case 1:
 					return analysisFragment;
 				//Processing Fragment 
-				case 4:
-				case 5:
+				case 2:
 					return processingFragment;
 				//Dashboard Fragment 		
-				case 6:
-				case 7:
+				case 3:
 				default:
 					return dashboardFragment;
 			}
@@ -233,7 +228,7 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		public int getCount() {
 			// Show 3 total pages.
-			return 8;
+			return 4;
 		}
 
 		@Override
@@ -243,19 +238,14 @@ public class MainActivity extends FragmentActivity implements
 			//Input Fragment label
 			case 0:
 				return getString(R.string.title_section1).toUpperCase(l);
-			case 1:
-				return getString(R.string.title_section1list).toUpperCase(l);
 			//Analysis Fragment label
-			case 2:
-			case 3:
+			case 1:
 				return getString(R.string.title_section2).toUpperCase(l);
 			//Processing Fragment label
-			case 4:
-			case 5:
+			case 2:
 				return getString(R.string.title_section3).toUpperCase(l);
 			//Dashboard Fragment label
-			case 6:
-			case 7:
+			case 3:
 			default:
 				return getString(R.string.title_section4).toUpperCase(l);
 			}
